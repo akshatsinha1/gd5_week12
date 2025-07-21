@@ -25,9 +25,9 @@ public class playerMovement : MonoBehaviour
     void Update()
     {
         //getting input from keyboard controls
-        ///calculateDesktopInputs();
+        calculateDesktopInputs();
         //calculateMobileInput();
-        calculateTouchInput();
+        //calculateTouchInput();
         //sets up the animator
         animationSetup();
 
