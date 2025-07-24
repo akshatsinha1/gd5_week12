@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class playerMovement : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class playerMovement : MonoBehaviour
 
     Touch theTouch;
 
+    PlayerInput _playerInput;
+    InputAction moveAction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,9 @@ public class playerMovement : MonoBehaviour
 
         //makes the character look down by default
         lookDirection = new Vector2(0, -1);
+
+        _playerInput = GetComponent<PlayerInput>();
+        moveAction = _playerInput.actions.FindAction("Move");
     }
 
     // Update is called once per frame
@@ -44,6 +51,19 @@ public class playerMovement : MonoBehaviour
         inputDirection = new Vector2(x, y).normalized;
 
         if(Input.GetKeyDown(KeyCode.Space))
+        {
+            attack();
+        }
+
+    }
+
+    void calculateDesktopInputs_InputActions()
+    {
+        
+
+        inputDirection = moveAction.ReadValue<Vector2>();
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             attack();
         }
@@ -116,42 +136,42 @@ public class playerMovement : MonoBehaviour
 
     }
 
-void calculateTouchInput()
-    {
-        if (Input.touchCount > 0)
-        {
-            theTouch = Input.GetTouch(0);
-            dpad.SetActive(true);
+//void calculateTouchInput()
+//    {
+//        if (Input.touchCount > 0)
+//        {
+//            theTouch = Input.GetTouch(0);
+//            dpad.SetActive(true);
 
-            if (theTouch.phase == TouchPhase.Began)
-            {
-                touchStart = theTouch.position;
-            }
-            else if(theTouch.phase == TouchPhase.Moved || theTouch.phase == TouchPhase.Ended)
-            {
-                touchEnd = theTouch.position;
+//            if (theTouch.phase == TouchPhase.Began)
+//            {
+//                touchStart = theTouch.position;
+//            }
+//            else if(theTouch.phase == TouchPhase.Moved || theTouch.phase == TouchPhase.Ended)
+//            {
+//                touchEnd = theTouch.position;
 
-                float x = touchEnd.x - touchStart.x;
-                float y = touchEnd.y - touchStart.y;
+//                float x = touchEnd.x - touchStart.x;
+//                float y = touchEnd.y - touchStart.y;
 
-                inputDirection = new Vector2(x, y).normalized;
+//                inputDirection = new Vector2(x, y).normalized;
 
-                if ((touchEnd - touchStart).magnitude > dPadRadius)
-                {
-                    dpad.transform.position = touchStart + (touchEnd - touchStart).normalized * dPadRadius;
-                }
-                else
-                {
-                    dpad.transform.position = touchEnd;
-                }
-            }
+//                if ((touchEnd - touchStart).magnitude > dPadRadius)
+//                {
+//                    dpad.transform.position = touchStart + (touchEnd - touchStart).normalized * dPadRadius;
+//                }
+//                else
+//                {
+//                    dpad.transform.position = touchEnd;
+//                }
+//            }
             
-        }
-        else
-        {
-            inputDirection = Vector2.zero;
-            dpad.SetActive(false);
-        }
+//        }
+//        else
+//        {
+//            inputDirection = Vector2.zero;
+//            dpad.SetActive(false);
+//        }
 
-    }
+//    }
 }
